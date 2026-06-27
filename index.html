@@ -1,846 +1,557 @@
-<!-- index.html（完整版：已加入「雅静T值终极模型 v2」；其它模型保持不变） -->
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#b00000" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="牛逼模型合集">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <title>牛逼模型合集</title>
-
-  <style>
-    :root{
-      --bg:#0b0b0f; --card:#11111a; --line:rgba(255,255,255,.10);
-      --text:#f5f5f7; --muted:rgba(255,255,255,.65);
-      --red:#ff2d2d; --red2:#b00000; --green:#2dff7a; --amber:#ffcc33;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-      background:
-        radial-gradient(800px 400px at 50% 20%, rgba(255,45,45,.18), transparent 60%),
-        radial-gradient(900px 500px at 50% 120%, rgba(176,0,0,.22), transparent 60%),
-        var(--bg);
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"PingFang SC","Microsoft YaHei",sans-serif;
-      color:var(--text);
-      padding:18px;
-    }
-    .app{width:min(860px,100%);}
-    .title{
-      font-size:22px;font-weight:900;letter-spacing:.5px;margin:0 0 12px;
-      display:flex;align-items:center;gap:10px;
-    }
-    .title::before{
-      content:"";width:10px;height:10px;border-radius:50%;
-      background:var(--red);box-shadow:0 0 18px rgba(255,45,45,.8);
-    }
-    .panel{
-      background:linear-gradient(180deg, rgba(255,45,45,.08), transparent 50%), var(--card);
-      border:1px solid var(--line);border-radius:18px;padding:16px;
-      box-shadow:0 18px 60px rgba(0,0,0,.55);
-    }
-
-    input{
-      width:100%;padding:14px 14px;font-size:20px;border-radius:14px;
-      border:1px solid var(--line);background:rgba(0,0,0,.35);color:var(--text);outline:none;
-    }
-    input:focus{border-color:rgba(255,45,45,.6);box-shadow:0 0 0 3px rgba(255,45,45,.15);}
-
-    .row{display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;}
-    button{
-      flex:1;
-      min-width:140px;
-      padding:12px 14px;font-size:15px;font-weight:900;
-      border-radius:14px;border:1px solid rgba(255,45,45,.55);
-      background:linear-gradient(180deg, rgba(255,45,45,.95), rgba(176,0,0,.95));
-      color:#fff;cursor:pointer;
-    }
-    button:active{transform:translateY(1px);}
-    .btnGhost{
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--line);
-      color:rgba(255,255,255,.9);
-    }
-    .btnDanger{
-      background:rgba(255,45,45,.10);
-      border:1px solid rgba(255,45,45,.35);
-      color:#fff;
-    }
-    .msg{margin-top:10px;font-size:13px;color:var(--muted);min-height:18px;}
-
-    .grid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:10px;
-    }
-    @media (max-width: 720px){ .grid{grid-template-columns:1fr;} }
-
-    .card{
-      border:1px solid var(--line);
-      border-radius:16px;
-      background:rgba(255,255,255,.03);
-      padding:12px 12px;
-    }
-    .cardHead{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      margin-bottom:8px;
-    }
-    .name{
-      font-weight:900;letter-spacing:.3px;font-size:14px;
-      display:flex;align-items:center;gap:8px;
-    }
-    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);box-shadow:0 0 14px rgba(255,255,255,.12);}
-    .seatBig{
-      font-size:30px;font-weight:1000;color:var(--red);
-      text-shadow:0 0 18px rgba(255,45,45,.28);
-      line-height:1.05;
-      text-align:right;
-      white-space:nowrap;
-    }
-    .meta{
-      margin-top:6px;font-size:12px;color:var(--muted);
-      display:flex;flex-wrap:wrap;gap:8px;
-    }
-    .tag{
-      font-size:11px;padding:4px 8px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.25);
-      color:rgba(255,255,255,.75);
-      max-width:100%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .tag.green{border-color:rgba(45,255,122,.25); color:rgba(45,255,122,.9); background:rgba(45,255,122,.06);}
-    .tag.amber{border-color:rgba(255,204,51,.25); color:rgba(255,204,51,.95); background:rgba(255,204,51,.06);}
-    .tag.red{border-color:rgba(255,45,45,.25); color:rgba(255,120,120,.95); background:rgba(255,45,45,.06);}
-
-    .history{
-      margin-top:14px;
-      border-top:1px solid var(--line);
-      padding-top:14px;
-    }
-    .hTitle{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-bottom:10px;
-    }
-    .hTitle h3{
-      margin:0; font-size:14px; font-weight:900; letter-spacing:.3px; color:rgba(255,255,255,.9);
-      display:flex; align-items:center; gap:8px;
-    }
-    .hTitle h3::before{content:""; width:8px;height:8px;border-radius:50%; background:rgba(255,255,255,.35);}
-    .hActions{display:flex; gap:10px; flex-wrap:wrap;}
-    .hActions button{min-width:auto; flex:0 0 auto; padding:10px 12px; font-size:13px; border-radius:12px;}
-
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:rgba(0,0,0,.18);
-    }
-    thead th{
-      text-align:left;
-      font-size:12px;
-      color:rgba(255,255,255,.75);
-      padding:10px 10px;
-      border-bottom:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      position:sticky;
-      top:0;
-      z-index:1;
-    }
-    tbody td{
-      padding:10px 10px;
-      font-size:12px;
-      color:rgba(255,255,255,.86);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      vertical-align:top;
-    }
-    tbody tr:last-child td{border-bottom:none;}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;}
-    .del{
-      cursor:pointer;
-      color:rgba(255,45,45,.95);
-      border:1px solid rgba(255,45,45,.35);
-      background:rgba(255,45,45,.08);
-      padding:6px 10px;
-      border-radius:10px;
-      font-weight:900;
-      font-size:12px;
-      display:inline-block;
-      user-select:none;
-    }
-    .tiny{margin-top:12px;font-size:12px;color:rgba(255,255,255,.5)}
-    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#b00000"/>
+<title>抓奖机组合核模型</title>
+<style>
+:root{
+  --bg:#0b0b0f;--card:#11111a;--line:rgba(255,255,255,.10);
+  --text:#f5f5f7;--muted:rgba(255,255,255,.50);
+  --red:#ff2d2d;--green:rgba(80,255,140,.9);--orange:#ff9f2d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(800px 400px at 50% 15%,rgba(255,45,45,.20),transparent 60%),
+    radial-gradient(900px 500px at 50% 110%,rgba(176,0,0,.25),transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  padding:12px;
+}
+.app{width:min(430px,100%)}
+.title{font-size:16px;font-weight:900;margin-bottom:12px;display:flex;gap:8px;align-items:center}
+.title:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 12px rgba(255,45,45,.9)}
+.version{font-size:10px;color:rgba(255,45,45,.65);font-weight:400}
+.panel{
+  background:linear-gradient(160deg,rgba(255,45,45,.07),transparent 55%),var(--card);
+  border:1px solid var(--line);border-radius:16px;padding:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+input{
+  width:100%;padding:12px 14px;font-size:22px;letter-spacing:5px;border-radius:12px;
+  border:1px solid var(--line);background:rgba(0,0,0,.40);color:var(--text);
+  outline:none;text-align:center;font-weight:800;
+}
+input:focus{border-color:rgba(255,45,45,.65);box-shadow:0 0 0 3px rgba(255,45,45,.12)}
+input::placeholder{font-size:13px;letter-spacing:1px;font-weight:400}
+.btn-wrap{display:flex;justify-content:center;margin:14px 0 8px}
+.btn-circle{
+  width:66px;height:66px;border-radius:50%;border:2px solid rgba(255,45,45,.55);
+  background:radial-gradient(circle at 38% 32%,rgba(255,90,90,.95),rgba(155,0,0,.95));
+  color:white;font-size:15px;font-weight:900;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px rgba(255,45,45,.40),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.btn-circle:active{transform:scale(.92)}
+.msg{text-align:center;font-size:12px;color:var(--muted);min-height:14px;margin-bottom:8px}
+.result{display:none;margin-top:4px}
+.result-hdr{text-align:center;font-size:10px;color:var(--muted);margin-bottom:8px;line-height:1.5}
+.hit-list{display:flex;flex-direction:column;gap:6px}
+.hit{
+  display:grid;grid-template-columns:auto 54px 1fr auto;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.07);
+  background:rgba(0,0,0,.22);
+}
+.hit.r1{border-color:rgba(255,45,45,.55);background:rgba(255,45,45,.11)}
+.hit.r2{border-color:rgba(255,140,0,.35);background:rgba(255,140,0,.07)}
+.hit.r3{border-color:rgba(80,255,140,.35);background:rgba(80,255,140,.06)}
+.hit.warn{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.035)}
+.hit-lbl{
+  font-size:9px;font-weight:900;padding:2px 6px;border-radius:999px;
+  background:rgba(255,45,45,.25);color:#ff9090;white-space:nowrap;
+}
+.hit-seat{font-size:22px;font-weight:1000;color:var(--red);text-align:center;white-space:nowrap}
+.row1{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row2{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row3{font-size:9px;color:rgba(255,255,255,.34);margin-top:1px;line-height:1.3}
+.hit-right{text-align:right;min-width:42px}
+.hit-wr{font-size:11px;font-weight:900;color:var(--green)}
+.hit-avg{font-size:9px;color:rgba(255,255,255,.35)}
+.skip{display:none;text-align:center;padding:18px;font-size:30px;font-weight:1000;color:rgba(255,255,255,.18);letter-spacing:4px}
+.history{margin-top:12px;padding:10px 11px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+.histHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.histTitle{font-size:11px;font-weight:800;color:var(--muted)}
+.clearBtn{font-size:10px;padding:4px 8px;border-radius:7px;cursor:pointer;border:1px solid rgba(255,45,45,.35);background:rgba(255,45,45,.10);color:rgba(255,100,100,.85)}
+.histList{display:flex;flex-direction:column;gap:5px;max-height:180px;overflow:auto}
+.histItem{border:1px solid rgba(255,255,255,.05);border-radius:9px;padding:7px 9px;background:rgba(0,0,0,.14)}
+.histTop{display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px}
+.histMain{font-size:11px;color:rgba(255,255,255,.60);line-height:1.35}
+.pill{display:inline-block;padding:1px 6px;border-radius:999px;border:1px solid rgba(255,45,45,.35);background:rgba(255,45,45,.10);font-weight:800;color:var(--red);margin-right:3px}
+.tiny{margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:10px;color:rgba(255,255,255,.30);line-height:1.65;white-space:pre-line}
+</style>
 </head>
 
 <body>
-  <div class="app">
-    <div class="title">牛逼模型合集（带战绩记录）</div>
+<div class="app">
+  <div class="title">抓奖机专属<span class="version">ID 5137307 / 组合核 v3过滤版</span></div>
+  <div class="panel">
+    <input id="room" inputmode="numeric" placeholder="输入5位房号" maxlength="5"/>
+    <div class="btn-wrap"><button class="btn-circle" id="go">开干</button></div>
+    <div class="msg" id="msg"></div>
 
-    <div class="panel">
-      <input id="room" inputmode="numeric" placeholder="输入5位房号（例如：51330）" maxlength="5" />
-      <div class="row">
-        <button id="go">开干</button>
-        <button class="btnGhost" id="copyLast">复制本次结果</button>
+    <div class="result" id="result">
+      <div class="result-hdr" id="resultHdr"></div>
+      <div class="hit-list" id="hitList"></div>
+    </div>
+
+    <div class="skip" id="skip">无命中，跳</div>
+
+    <div class="history">
+      <div class="histHead">
+        <span class="histTitle">最近记录</span>
+        <button class="clearBtn" id="clearBtn">清空</button>
       </div>
+      <div class="histList" id="histList"></div>
+    </div>
 
-      <div class="msg" id="msg"></div>
+    <div class="tiny">
+【抓奖机 ID 5137307 组合核 v3过滤版】
 
-      <div class="grid" id="grid" style="display:none;"></div>
+取X：
+房号ABCDE。
+1号=A，2号=B，3号=C，4号=D，5号=E，6号=E。
 
-      <div class="history">
-        <div class="hTitle">
-          <h3>战绩记录（本机保存）</h3>
-          <div class="hActions">
-            <button class="btnGhost" id="copyAll">复制全部</button>
-            <button class="btnGhost" id="exportCsv">导出CSV</button>
-            <button class="btnDanger" id="clearAll">清空</button>
-          </div>
-        </div>
+核计算：
+只看X参与。
+差值：|X-另一位|，差0也算。
+和值：X+另一位，≤9有效，>9作废。
 
-        <div style="max-height:320px; overflow:auto; border-radius:14px;">
-          <table>
-            <thead>
-              <tr>
-                <th style="width:110px;">时间</th>
-                <th style="width:86px;">房号</th>
+主组合9条：
+1 差1+差6+和5
+2 差3+和8
+3 差3+和4
+4 和3+和6
+5 差0+差3
+6 和6+和8
+7 差0+和9
+8 差2+差6
+9 和4+和5
 
-                <!-- 八戒三列（最终置顶）：最终 / 1T / 2~6 -->
-                <th>八戒最终</th>
-                <th>八戒1号T</th>
-                <th>八戒T双甜点(2~6)</th>
+新增双核补丁6条：
+10 差1+双差2
+11 双和9
+12 和8+双差4
+13 和2+双差2
+14 差5+双差3
+15 差2+双差3
 
-                <!-- ✅ 新增：雅静T值终极模型 v2 -->
-                <th>雅静T值v2</th>
+过滤逻辑：
+1）X=0 直接过滤，53340 5号 -1040 已打穿。
+2）单独差3+和8，不打，历史大输来自这里。
+3）单独和4+和5，不打，只能当加分。
+4）只有差3+和8+差0+差3，降级谨慎。
+5）双核重复优先。
+6）多组合共振优先。
+7）差0结构必须有共振才优先。
 
-                <th>蜡笔小新</th>
-                <th>梦见</th>
-                <th>呵呵呵A</th>
-                <th>呵呵呵B</th>
-                <th>偏爱</th>
+已知回测：
+15组合不过滤：35局，29胜6负，胜率82.9%，净分+11430，大输2。
+v2过滤后：28局，26胜2负，胜率92.9%，净分+12870，大输0。
+v3新增过滤：X=0直接跳，避免53340 5号 -1040假强结构。
 
-                <th style="width:70px;">操作</th>
-              </tr>
-            </thead>
-            <tbody id="histBody">
-              <tr><td colspan="13" style="color:rgba(255,255,255,.55);">暂无记录</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="tiny">
-        ✅ 八戒口径统一：页面与我对话都以 <code>八戒最终推荐（只输出一个）</code> 为准。规则：<code>2~6双甜点优先</code> → <code>1T兜底</code> → 否则跳。
-      </div>
+选位规则：
+优先A+与双核重复；
+其次多组合共振；
+再看A档组合；
+弱结构只显示谨慎，不作为第一推荐。
     </div>
   </div>
-
-  <script>
-    // ====== 基础工具 ======
-    const mod = (n,m)=>((n % m) + m) % m;
-
-    function parseABCDE(room5){
-      const A=+room5[0], B=+room5[1], C=+room5[2], D=+room5[3], E=+room5[4];
-      return {A,B,C,D,E};
-    }
-
-    function calcRep(room5){
-      const set = new Set(room5.split(""));
-      return 5 - set.size;
-    }
-
-    function fmtTime(ts){
-      const d = new Date(ts);
-      const pad = (x)=>String(x).padStart(2,"0");
-      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    }
-
-    function escapeHtml(s){
-      return String(s)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-    }
-
-    // ====== 各账号模型 ======
-
-    // 蜡笔小新：V=-4A-3B-2C-3D-E-5
-    function model_xj(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const V = -4*A -3*B -2*C -3*D -E -5;
-      const r = mod(V, 5);
-      return { seat:r+2, extra:`V=${V}｜V mod 5=${r}` };
-    }
-
-    // 梦见：S=2A+C+D+E；V=B-S
-    function model_mj(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const S = 2*A + C + D + E;
-      const V = B - S;
-      const r = mod(V, 5);
-      return { seat:r+2, extra:`S=${S}｜V=${V}｜V mod 5=${r}` };
-    }
-
-    // 呵呵呵A：V2=B+C+2D-2E-2
-    function model_hhh_A(room5){
-      const {B,C,D,E} = parseABCDE(room5);
-      const V2 = B + C + 2*D - 2*E - 2;
-      const r = mod(V2, 5);
-      return { seat:r+2, extra:`V₂=${V2}｜V₂ mod 5=${r}` };
-    }
-
-    // 呵呵呵B：rep=5-不同数，par=1(同奇偶)否则0；S=A+B+C+D+rep+par；偶4奇5
-    function model_hhh_B(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const rep = calcRep(room5);
-      const par = ((D % 2) === (E % 2)) ? 1 : 0;
-      const S = A + B + C + D + rep + par;
-      const seat = (S % 2 === 0) ? 4 : 5;
-      return { seat, extra:`rep=${rep}｜par=${par}｜S=${S}｜S%2=${S%2}` };
-    }
-
-    // ====== 偏爱（稳健口诀模型｜保持不变）=====
-    function model_py(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-
-      if (A === 7) {
-        return { seat: 6, action: "play", extra: `命中：A=7 → 坐6｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-      }
-      if (new Set([9,0,6,1]).has(E)) {
-        return { seat: 5, action: "play", extra: `命中：E∈{9,0,6,1} → 坐5｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-      }
-      if (new Set([6,7]).has(C)) {
-        return { seat: 3, action: "play", extra: `命中：C∈{6,7} → 坐3｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-      }
-      if (B === 3) {
-        return { seat: 2, action: "play", extra: `命中：B=3 → 坐2｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-      }
-      if (D === 8) {
-        return { seat: 4, action: "play", extra: `命中：D=8 → 坐4｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-      }
-
-      return { seat: null, action: "skip", extra: `不命中 → 不打｜A=${A} B=${B} C=${C} D=${D} E=${E}` };
-    }
-
-    // ============================================================
-    // ✅ 雅静T值终极模型 v2（新增）
-    // 定义：
-    //   S = A+B+C+D+E
-    //   T2=S-B, T3=S-C, T5=S-E, T6=S-A
-    // 甜点（黄金T值）：
-    //   sweet[2] = {11,16,18,25}
-    //   sweet[3] = {16,19,21,23,24}
-    //   sweet[5] = {13,19,20,25,27}
-    //   sweet[6] = {11,12,16,18,19,23}
-    // 多命中优先级（v2）：6 > 3 > 2 > 5
-    // 输出：最多3个位子（No1 + 备选2个）；未命中则跳
-    // ============================================================
-    function model_yj_Tv2(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const S = A + B + C + D + E;
-
-      const T2 = S - B;
-      const T3 = S - C;
-      const T5 = S - E;
-      const T6 = S - A;
-
-      const sweet = {
-        2: new Set([11,16,18,25]),
-        3: new Set([16,19,21,23,24]),
-        5: new Set([13,19,20,25,27]),
-        6: new Set([11,12,16,18,19,23])
-      };
-
-      const hits = [];
-      if(sweet[2].has(T2)) hits.push(2);
-      if(sweet[3].has(T3)) hits.push(3);
-      if(sweet[5].has(T5)) hits.push(5);
-      if(sweet[6].has(T6)) hits.push(6);
-
-      const priority = [6,3,2,5];
-      const sorted = hits.slice().sort((x,y)=>priority.indexOf(x)-priority.indexOf(y));
-      const top3 = sorted.slice(0,3);
-
-      const tMap = {2:T2,3:T3,5:T5,6:T6};
-      const tStr = `S=${S}｜T2=${T2} T3=${T3} T5=${T5} T6=${T6}`;
-
-      if(top3.length === 0){
-        return {
-          action:"skip",
-          seat:null,
-          seatBig:"跳",
-          extra:`A=${A} B=${B} C=${C} D=${D} E=${E}｜${tStr}｜未命中（v2）`,
-          tags:[{t:"跳（未命中）", cls:"red"}]
-        };
-      }
-
-      const no1 = top3[0];
-      const backups = top3.slice(1);
-
-      const backupText = backups.length ? `｜备选=${backups.join("/")}` : "";
-      const hitText = `命中=[${hits.join(",")}]｜No1=${no1}${backupText}`;
-
-      return {
-        action:"play",
-        seat:no1,
-        seatBig:`${no1}号`,
-        extra:`A=${A} B=${B} C=${C} D=${D} E=${E}｜${tStr}｜${hitText}`,
-        tags:[
-          {t:"雅静T值终极v2", cls:"green"},
-          {t:`最多3位：${top3.join("/")}`, cls:"amber"}
-        ]
-      };
-    }
-
-    // ============================================================
-    // ✅ 八戒三套（最终统一口径）——保持不变
-    // ============================================================
-
-    function model_bj_1T(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const T1 = B + C + D + E;
-      const ok = (T1 >= 15 && T1 <= 18);
-      return {
-        action: ok ? "play" : "skip",
-        seat: ok ? 1 : null,
-        seatBig: ok ? "1号" : "跳",
-        extra: `A=${A} B=${B} C=${C} D=${D} E=${E}｜T1=BCDE=${T1}｜甜点(15~18)=${ok ? "是" : "否"}`,
-        tags: ok
-          ? [{t:"优质T", cls:"green"}]
-          : [{t:"跳（不在甜点）", cls:"red"}]
-      };
-    }
-
-    function model_bj_Tsweet_26(room5){
-      const {A,B,C,D,E} = parseABCDE(room5);
-      const S = A + B + C + D + E;
-
-      const T2 = S - B;
-      const T3 = S - C;
-      const T4 = S - D;
-      const T5 = S - E;
-      const T6 = S - A;
-
-      const sweet = {
-        2: new Set([14,16]),
-        3: new Set([18,19]),
-        4: new Set([10,11,12]),
-        5: new Set([22,23]),
-        6: new Set([16,17])
-      };
-
-      const hits = [];
-      if(sweet[2].has(T2)) hits.push(2);
-      if(sweet[3].has(T3)) hits.push(3);
-      if(sweet[4].has(T4)) hits.push(4);
-      if(sweet[5].has(T5)) hits.push(5);
-      if(sweet[6].has(T6)) hits.push(6);
-
-      if(hits.length === 0){
-        return {
-          action:"skip",
-          seat:null,
-          seatBig:"跳",
-          extra:`A=${A} B=${B} C=${C} D=${D} E=${E}｜S=${S}｜T2=${T2} T3=${T3} T4=${T4} T5=${T5} T6=${T6}｜未命中双甜点`,
-          tags:[{t:"跳（未命中）", cls:"red"}]
-        };
-      }
-
-      // 优先级：6 > 3 > 5 > 2 > 4（只输出一个位子）
-      const priority = [6,3,5,2,4];
-      const seat = hits.slice().sort((x,y)=>priority.indexOf(x)-priority.indexOf(y))[0];
-
-      const tMap = {2:T2,3:T3,4:T4,5:T5,6:T6};
-      const tVal = tMap[seat];
-
-      return {
-        action:"play",
-        seat,
-        seatBig:`${seat}号`,
-        extra:`A=${A} B=${B} C=${C} D=${D} E=${E}｜S=${S}｜命中位=[${hits.join(",")}]｜No1=${seat}（T${seat}=${tVal}）`,
-        tags:[{t:"优质T（双甜点）", cls:"green"}]
-      };
-    }
-
-    function model_bj_final(room5){
-      const bjT = model_bj_Tsweet_26(room5);
-      if (bjT.action === "play") {
-        return {
-          action:"play",
-          seat: bjT.seat,
-          seatBig: `${bjT.seat}号`,
-          extra: `【最终=2~6优先】${bjT.extra}`,
-          tags:[{t:"最终推荐", cls:"green"}]
-        };
-      }
-
-      const bj1 = model_bj_1T(room5);
-      if (bj1.action === "play") {
-        return {
-          action:"play",
-          seat: 1,
-          seatBig: `1号`,
-          extra: `【最终=1T兜底】${bj1.extra}`,
-          tags:[{t:"最终推荐", cls:"green"}]
-        };
-      }
-
-      return {
-        action:"skip",
-        seat:null,
-        seatBig:"跳",
-        extra:`【最终】2~6未中 + 1T未中 → 跳｜A=${parseABCDE(room5).A} B=${parseABCDE(room5).B} C=${parseABCDE(room5).C} D=${parseABCDE(room5).D} E=${parseABCDE(room5).E}`,
-        tags:[{t:"最终推荐", cls:"red"}]
-      };
-    }
-
-    // ====== UI 渲染 ======
-    const roomEl = document.getElementById("room");
-    const goEl = document.getElementById("go");
-    const copyLastEl = document.getElementById("copyLast");
-    const msgEl = document.getElementById("msg");
-    const gridEl = document.getElementById("grid");
-    const histBodyEl = document.getElementById("histBody");
-
-    const copyAllEl = document.getElementById("copyAll");
-    const exportCsvEl = document.getElementById("exportCsv");
-    const clearAllEl = document.getElementById("clearAll");
-
-    // ✅ 新key：表格列新增（避免旧记录结构不一致）
-    const LS_KEY = "nb_model_history_with_yajingT_v2";
-    const MAX_KEEP = 200;
-
-    let lastTextToCopy = "";
-
-    function cardHTML({name, seatText, extra, tags=[]}){
-      const tagHTML = tags.map(x => `<span class="tag ${x.cls||""}">${escapeHtml(x.t)}</span>`).join("");
-      return `
-        <div class="card">
-          <div class="cardHead">
-            <div class="name"><span class="dot"></span>${escapeHtml(name)}</div>
-            <div class="seatBig">${escapeHtml(seatText)}</div>
-          </div>
-          <div class="meta">
-            <span class="tag">${escapeHtml(extra)}</span>
-            ${tagHTML}
-          </div>
-        </div>
-      `;
-    }
-
-    function computeAll(room5){
-      const bjF = model_bj_final(room5);
-      const bj1 = model_bj_1T(room5);
-      const bjT = model_bj_Tsweet_26(room5);
-
-      // ✅ 雅静T值终极模型 v2
-      const yj = model_yj_Tv2(room5);
-
-      const xj = model_xj(room5);
-      const mj = model_mj(room5);
-      const hA = model_hhh_A(room5);
-      const hB = model_hhh_B(room5);
-      const py = model_py(room5);
-
-      return { bjF, bj1, bjT, yj, xj, mj, hA, hB, py };
-    }
-
-    function renderCards(room5, out){
-      const hTagsA = [
-        {t:"模型A：2/3主力参考", cls:"amber"},
-        ((out.hA.seat===2||out.hA.seat===3) ? {t:"✅落在2/3", cls:"green"} : {t:"非2/3（仍输出）", cls:""} )
-      ];
-      const hTagsB = [{t:"模型B：只出4/5对冲", cls:"amber"}];
-
-      // ✅ 八戒三张卡放最上方（最终/1T/2~6）
-      // ✅ 新增：雅静T值终极模型 v2（放在八戒下面，不影响其它模型）
-      gridEl.innerHTML = [
-        cardHTML({name:"八戒最终推荐（只输出一个）", seatText: out.bjF.seatBig, extra: out.bjF.extra, tags: out.bjF.tags || []}),
-        cardHTML({name:"八戒1号位T终极模型", seatText: out.bj1.seatBig, extra: out.bj1.extra, tags: out.bj1.tags || []}),
-        cardHTML({name:"八戒T双甜点结构版（2~6）", seatText: out.bjT.seatBig, extra: out.bjT.extra, tags: out.bjT.tags || []}),
-
-        cardHTML({name:"雅静T值终极模型 v2", seatText: out.yj.seatBig, extra: out.yj.extra, tags: out.yj.tags || []}),
-
-        // 其它模型保持原样
-        cardHTML({name:"蜡笔小新", seatText: `${out.xj.seat}号`, extra: out.xj.extra}),
-        cardHTML({name:"梦见", seatText: `${out.mj.seat}号`, extra: out.mj.extra}),
-        cardHTML({name:"呵呵呵（模型A）", seatText: `${out.hA.seat}号`, extra: out.hA.extra, tags: hTagsA}),
-        cardHTML({name:"呵呵呵（模型B）", seatText: `${out.hB.seat}号`, extra: out.hB.extra, tags: hTagsB}),
-
-        // 偏爱：支持“不打”
-        cardHTML({
-          name:"偏爱",
-          seatText: (out.py.seat ? `${out.py.seat}号` : "不打"),
-          extra: out.py.extra,
-          tags: out.py.seat ? [{t:"✅可打", cls:"green"}] : [{t:"❌不打", cls:"red"}]
-        })
-      ].join("");
-
-      gridEl.style.display = "grid";
-    }
-
-    // ====== 历史记录存取 ======
-    function loadHistory(){
-      try{
-        const raw = localStorage.getItem(LS_KEY);
-        const arr = raw ? JSON.parse(raw) : [];
-        return Array.isArray(arr) ? arr : [];
-      }catch(e){
-        return [];
-      }
-    }
-
-    function saveHistory(arr){
-      localStorage.setItem(LS_KEY, JSON.stringify(arr));
-    }
-
-    function addHistory(item){
-      const arr = loadHistory();
-      arr.unshift(item);
-      if(arr.length > MAX_KEEP) arr.length = MAX_KEEP;
-      saveHistory(arr);
-      renderHistory();
-    }
-
-    function deleteHistory(id){
-      const arr = loadHistory().filter(x => x.id !== id);
-      saveHistory(arr);
-      renderHistory();
-    }
-
-    function clearHistory(){
-      saveHistory([]);
-      renderHistory();
-    }
-
-    function renderHistory(){
-      const arr = loadHistory();
-      if(arr.length === 0){
-        histBodyEl.innerHTML = `<tr><td colspan="13" style="color:rgba(255,255,255,.55);">暂无记录</td></tr>`;
-        return;
-      }
-
-      histBodyEl.innerHTML = arr.map(row => `
-        <tr>
-          <td class="mono">${escapeHtml(fmtTime(row.ts))}</td>
-          <td class="mono">${escapeHtml(row.room)}</td>
-
-          <td class="mono">${escapeHtml(row.bjF)}</td>
-          <td class="mono">${escapeHtml(row.bj1)}</td>
-          <td class="mono">${escapeHtml(row.bjT)}</td>
-
-          <td class="mono">${escapeHtml(row.yj)}</td>
-
-          <td class="mono">${escapeHtml(row.xj)}</td>
-          <td class="mono">${escapeHtml(row.mj)}</td>
-          <td class="mono">${escapeHtml(row.hA)}</td>
-          <td class="mono">${escapeHtml(row.hB)}</td>
-          <td class="mono">${escapeHtml(row.py)}</td>
-
-          <td><span class="del" data-del="${escapeHtml(row.id)}">删</span></td>
-        </tr>
-      `).join("");
-
-      histBodyEl.querySelectorAll("[data-del]").forEach(el=>{
-        el.addEventListener("click", ()=>deleteHistory(el.getAttribute("data-del")));
-      });
-    }
-
-    // ====== 复制/导出 ======
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        msgEl.textContent = "✅ 已复制到剪贴板";
-      }catch(e){
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-        msgEl.textContent = "✅ 已复制到剪贴板";
-      }
-      setTimeout(()=>{ msgEl.textContent=""; }, 900);
-    }
-
-    function seatOnly(s){
-      const left = String(s).split("｜")[0];
-      return left;
-    }
-
-    function buildCopyLine(room5, out){
-      const t = fmtTime(Date.now());
-      const {B,C,D,E} = parseABCDE(room5);
-      const T1 = B + C + D + E;
-
-      const bjFinalShort = (out.bjF.action === "play")
-        ? `${out.bjF.seat}号(最终)`
-        : "跳(最终)";
-
-      const bj1Short = (out.bj1.action === "play")
-        ? `1号(优质T T1=${T1})`
-        : `跳(T1=${T1})`;
-
-      const bjTShort = (out.bjT.action === "play")
-        ? `${out.bjT.seat}号(双甜点)`
-        : "跳(未命中)";
-
-      const yjShort = (out.yj.action === "play")
-        ? `${out.yj.seat}号(v2)`
-        : "跳(v2)";
-
-      const pySeatText = out.py.seat ? `${out.py.seat}` : "不打";
-
-      return `${t} ${room5} ｜ 八戒最终:${bjFinalShort} 八戒1T:${bj1Short} 八戒2~6:${bjTShort} ｜ 雅静T:${yjShort} ｜ 小新${out.xj.seat} 梦见${out.mj.seat} 呵A${out.hA.seat} 呵B${out.hB.seat} 偏爱${pySeatText}`;
-    }
-
-    function exportCSV(){
-      const arr = loadHistory();
-      if(arr.length===0){
-        msgEl.textContent = "暂无记录可导出";
-        setTimeout(()=>{ msgEl.textContent=""; }, 900);
-        return;
-      }
-      const header = ["time","room","bajie_final","bajie_1T","bajie_T_26","yajing_Tv2","xj","mj","hhhA","hhhB","pianai"];
-      const rows = arr.map(r => [
-        new Date(r.ts).toISOString(),
-        r.room, r.bjF, r.bj1, r.bjT, r.yj, r.xj, r.mj, r.hA, r.hB, r.py
-      ]);
-      const csv = [header, ...rows]
-        .map(line => line.map(x => `"${String(x).replaceAll('"','""')}"`).join(","))
-        .join("\n");
-
-      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "nb_model_history.csv";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      msgEl.textContent = "✅ CSV 已导出";
-      setTimeout(()=>{ msgEl.textContent=""; }, 900);
-    }
-
-    // ====== 主流程 ======
-    function run(){
-      const s = roomEl.value.trim().replace(/\s+/g,"");
-      if(!/^\d{5}$/.test(s)){
-        msgEl.textContent = "请输入正确的5位数字（例如：51330）";
-        gridEl.style.display = "none";
-        gridEl.innerHTML = "";
-        return;
-      }
-
-      const out = computeAll(s);
-      renderCards(s, out);
-
-      lastTextToCopy = buildCopyLine(s, out);
-
-      const bjFShort = (out.bjF.action === "play")
-        ? `${out.bjF.seat}号｜${out.bjF.extra}`
-        : `跳｜${out.bjF.extra}`;
-
-      const bj1Short = (out.bj1.action === "play")
-        ? `1号｜${out.bj1.extra}`
-        : `跳｜${out.bj1.extra}`;
-
-      const bjTShort = (out.bjT.action === "play")
-        ? `${out.bjT.seat}号｜${out.bjT.extra}`
-        : `跳｜${out.bjT.extra}`;
-
-      const yjShort = (out.yj.action === "play")
-        ? `${out.yj.seat}号｜${out.yj.extra}`
-        : `跳｜${out.yj.extra}`;
-
-      const pySeatPrefix = (out.py.seat ?? "不打");
-
-      addHistory({
-        id: `${Date.now()}_${Math.random().toString(16).slice(2)}`,
-        ts: Date.now(),
-        room: s,
-
-        bjF: bjFShort,
-        bj1: bj1Short,
-        bjT: bjTShort,
-
-        yj: yjShort,
-
-        xj: `${out.xj.seat}｜${out.xj.extra}`,
-        mj: `${out.mj.seat}｜${out.mj.extra}`,
-        hA: `${out.hA.seat}｜${out.hA.extra}`,
-        hB: `${out.hB.seat}｜${out.hB.extra}`,
-        py: `${pySeatPrefix}｜${out.py.extra}`
-      });
-
-      msgEl.textContent = "";
-      setTimeout(()=>{ roomEl.value=""; roomEl.focus(); }, 250);
-    }
-
-    goEl.addEventListener("click", run);
-    roomEl.addEventListener("keydown", e => { if(e.key==="Enter") run(); });
-
-    copyLastEl.addEventListener("click", ()=>{
-      if(!lastTextToCopy){
-        msgEl.textContent = "还没有本次结果可复制";
-        setTimeout(()=>{ msgEl.textContent=""; }, 900);
-        return;
-      }
-      copyText(lastTextToCopy);
-    });
-
-    copyAllEl.addEventListener("click", ()=>{
-      const arr = loadHistory();
-      if(arr.length===0){
-        msgEl.textContent = "暂无记录可复制";
-        setTimeout(()=>{ msgEl.textContent=""; }, 900);
-        return;
-      }
-
-      const lines = arr
-        .slice()
-        .reverse()
-        .map(r => {
-          const t = fmtTime(r.ts);
-          const pySeat = seatOnly(r.py);
-
-          return `${t} ${r.room} ｜ 八戒最终(${seatOnly(r.bjF)}) 八戒1T(${seatOnly(r.bj1)}) 八戒2~6(${seatOnly(r.bjT)}) ｜ 雅静T(${seatOnly(r.yj)}) ｜ 小新${seatOnly(r.xj)} 梦见${seatOnly(r.mj)} 呵A${seatOnly(r.hA)} 呵B${seatOnly(r.hB)} 偏爱${pySeat}`;
-        });
-
-      copyText(lines.join("\n"));
-    });
-
-    exportCsvEl.addEventListener("click", exportCSV);
-
-    clearAllEl.addEventListener("click", ()=>{
-      if(confirm("确认清空所有战绩记录？（本机保存会被删除）")){
-        clearHistory();
-        msgEl.textContent = "✅ 已清空";
-        setTimeout(()=>{ msgEl.textContent=""; }, 900);
-      }
-    });
-
-    // 初始化
-    renderHistory();
-    roomEl.focus();
-
-    // 注册离线
-    if("serviceWorker" in navigator){
-      window.addEventListener("load", ()=>navigator.serviceWorker.register("./sw.js"));
-    }
-  </script>
+</div>
+
+<script>
+const HISTORY_KEY='zhuajiangji_5137307_combo_v3_filter';
+const HISTORY_LIMIT=30;
+
+const roomEl=document.getElementById('room');
+const goEl=document.getElementById('go');
+const msgEl=document.getElementById('msg');
+const resultEl=document.getElementById('result');
+const resultHdr=document.getElementById('resultHdr');
+const hitListEl=document.getElementById('hitList');
+const skipEl=document.getElementById('skip');
+const histListEl=document.getElementById('histList');
+const clearBtnEl=document.getElementById('clearBtn');
+
+const COMBOS=[
+  ['D1','D6','S5','差1+差6+和5','A+','主'],
+  ['D3','S8',null,'差3+和8','A','主'],
+  ['D3','S4',null,'差3+和4','A+','主'],
+  ['S3','S6',null,'和3+和6','A+','主'],
+  ['D0','D3',null,'差0+差3','A','主'],
+  ['S6','S8',null,'和6+和8','B','补'],
+  ['D0','S9',null,'差0+和9','B','补'],
+  ['D2','D6',null,'差2+差6','A','补'],
+  ['S4','S5',null,'和4+和5','B','补'],
+
+  ['D1','DD2',null,'差1+双差2','A+','双'],
+  ['SS9',null,null,'双和9','A+','双'],
+  ['S8','DD4',null,'和8+双差4','A+','双'],
+  ['S2','DD2',null,'和2+双差2','A','双'],
+  ['D5','DD3',null,'差5+双差3','A','双'],
+  ['D2','DD3',null,'差2+双差3','A','双']
+];
+
+function digits(room){return room.split('').map(Number)}
+function seatIndex(seat){
+  if(seat===1)return 0;
+  if(seat===2)return 1;
+  if(seat===3)return 2;
+  if(seat===4)return 3;
+  if(seat===5||seat===6)return 4;
+}
+function parityPattern(room){
+  return digits(room).map(n=>n%2===0?'偶':'奇').join('');
+}
+function rankText(room){
+  const ds=digits(room),labs=['A','B','C','D','E'];
+  const order=ds.map((v,i)=>({v,i})).sort((a,b)=>{
+    if(b.v!==a.v)return b.v-a.v;
+    return a.i-b.i;
+  });
+  const ranks=Array(5);
+  order.forEach((it,idx)=>ranks[it.i]=idx+1);
+  return ds.map((d,i)=>`${labs[i]}${d}=第${ranks[i]}`).join('　');
+}
+function countMap(arr){
+  const m={};
+  arr.forEach(n=>m[n]=(m[n]||0)+1);
+  return m;
+}
+function repeatInfo(room){
+  const ds=digits(room);
+  const m=countMap(ds);
+  const groups=Object.entries(m)
+    .map(([num,cnt])=>({num:Number(num),cnt}))
+    .filter(g=>g.cnt>1)
+    .sort((a,b)=>b.cnt-a.cnt||b.num-a.num);
+
+  const cnts=groups.map(g=>g.cnt).sort((a,b)=>b-a).join(',');
+  let kind='无重号';
+  if(cnts==='2')kind='单对子';
+  else if(cnts==='2,2')kind='双对子';
+  else if(cnts==='3')kind='三重号';
+  else if(cnts==='3,2')kind='三带二';
+  else if(cnts==='4')kind='四重号';
+  else if(cnts==='5')kind='五重号';
+  return {hasRepeat:groups.length>0,groups,kind};
+}
+function repeatText(info){
+  if(!info.hasRepeat)return '无';
+  return info.groups.map(g=>`${g.num}×${g.cnt}`).join(' / ');
+}
+
+function calcKernels(room,seat){
+  const ds=digits(room);
+  const idx=seatIndex(seat);
+  const x=ds[idx];
+  const diffs=[];
+  const sums=[];
+
+  ds.forEach((n,i)=>{
+    if(i===idx)return;
+    const d=Math.abs(x-n);
+    if(d>=0 && d<=9) diffs.push(d);
+
+    const s=x+n;
+    if(s>=0 && s<=9) sums.push(s);
+  });
+
+  const diffSet=new Set(diffs);
+  const sumSet=new Set(sums);
+  const diffCount=countMap(diffs);
+  const sumCount=countMap(sums);
+
+  return {x,diffs,sums,diffSet,sumSet,diffCount,sumCount};
+}
+
+function hasToken(k,token){
+  if(!token)return true;
+  if(token.startsWith('DD')){
+    const n=Number(token.slice(2));
+    return (k.diffCount[n]||0)>=2;
+  }
+  if(token.startsWith('SS')){
+    const n=Number(token.slice(2));
+    return (k.sumCount[n]||0)>=2;
+  }
+  const type=token[0];
+  const num=Number(token.slice(1));
+  if(type==='D')return k.diffSet.has(num);
+  if(type==='S')return k.sumSet.has(num);
+  return false;
+}
+
+function hitCombos(room,seat){
+  const k=calcKernels(room,seat);
+  const hits=COMBOS
+    .filter(c=>hasToken(k,c[0]) && hasToken(k,c[1]) && hasToken(k,c[2]))
+    .map(c=>({name:c[3],level:c[4],type:c[5]}));
+  return {k,hits};
+}
+
+function levelWeight(level){
+  if(level==='A+')return 3;
+  if(level==='A')return 2;
+  return 1;
+}
+
+function onlyNames(hits){
+  return hits.map(h=>h.name).sort().join('|');
+}
+
+function applyFilters(hits,k){
+  const key=onlyNames(hits);
+  const hasDouble=hits.some(h=>h.type==='双');
+  const hasAplus=hits.some(h=>h.level==='A+');
+  const hasA=hits.some(h=>h.level==='A');
+  const comboCount=hits.length;
+
+  let status='play';
+  let tag='可打';
+  let filterNote='正常命中';
+  let filterScore=0;
+
+  // 新增规则：X=0 直接过滤
+  if(k.x===0){
+    return {
+      status:'skip',
+      tag:'过滤',
+      filterNote:'X=0假强结构，53340 5号-1040已打穿，跳',
+      filterScore:-999
+    };
+  }
+
+  // 1）单独差3+和8，历史大输来源，直接跳
+  if(key==='差3+和8'){
+    return {
+      status:'skip',
+      tag:'过滤',
+      filterNote:'单独差3+和8，历史大输结构，跳',
+      filterScore:-999
+    };
+  }
+
+  // 2）只有和4+和5，不打
+  if(key==='和4+和5'){
+    return {
+      status:'skip',
+      tag:'过滤',
+      filterNote:'单独和4+和5，只作加分，不单独打',
+      filterScore:-999
+    };
+  }
+
+  // 3）只有差3+和8+差0+差3，降级谨慎
+  if(key==='差0+差3|差3+和8'){
+    status='warn';
+    tag='谨慎';
+    filterNote='差3+和8叠差0+差3但无其他共振，历史有回撤';
+    filterScore=-20;
+  }
+
+  // 4）只有差1+差6+和5 + 和4+和5，降级
+  if(key==='和4+和5|差1+差6+和5'){
+    status='warn';
+    tag='谨慎';
+    filterNote='弱共振结构，优先级降低';
+    filterScore=-15;
+  }
+
+  // 5）双核重复优先
+  if(hasDouble){
+    status='play';
+    tag='双核';
+    filterNote='双差/双和重复结构，优先';
+    filterScore+=25;
+  }
+
+  // 6）多组合共振优先
+  if(comboCount>=2 && status!=='warn'){
+    tag=hasAplus?'强进':'共振';
+    filterNote='多组合共振，优先';
+    filterScore+=15;
+  }
+
+  if(hasAplus)filterScore+=20;
+  else if(hasA)filterScore+=10;
+
+  return {status,tag,filterNote,filterScore};
+}
+
+function classify(room,seat){
+  const {k,hits}=hitCombos(room,seat);
+  if(!hits.length){
+    return {
+      seat,x:k.x,grade:99,tag:'跳',score:0,hits,k,
+      reason:'未命中抓奖机组合核v3',
+      status:'skip'
+    };
+  }
+
+  const f=applyFilters(hits,k);
+  if(f.status==='skip'){
+    return {
+      seat,x:k.x,grade:98,tag:f.tag,score:0,hits,k,
+      reason:f.filterNote,
+      status:'skip'
+    };
+  }
+
+  const base=hits.reduce((sum,h)=>sum+levelWeight(h.level)*10,0)+hits.length*5;
+  let score=base+f.filterScore;
+  let grade=3;
+
+  if(f.status==='warn')grade=4;
+  else if(hits.some(h=>h.type==='双') || hits.some(h=>h.level==='A+'))grade=1;
+  else if(hits.length>=2)grade=2;
+  else grade=3;
+
+  return {
+    seat,x:k.x,grade,tag:f.tag,score,hits,k,
+    reason:f.filterNote,
+    status:f.status
+  };
+}
+
+function analyze(room){
+  const items=[1,2,3,4,5,6].map(s=>classify(room,s));
+
+  const play=items.filter(s=>s.grade<98);
+  const skipped=items.filter(s=>s.grade===98);
+
+  play.sort((a,b)=>{
+    if(a.grade!==b.grade)return a.grade-b.grade;
+    if(b.score!==a.score)return b.score-a.score;
+    if(b.hits.length!==a.hits.length)return b.hits.length-a.hits.length;
+    if(b.x!==a.x)return b.x-a.x;
+    return b.seat-a.seat;
+  });
+
+  skipped.sort((a,b)=>{
+    if(b.x!==a.x)return b.x-a.x;
+    return b.seat-a.seat;
+  });
+
+  return {play,skipped};
+}
+
+function kernelText(item){
+  const d=[...item.k.diffSet].sort((a,b)=>a-b).map(n=>{
+    const c=item.k.diffCount[n]||0;
+    return c>=2?`差${n}×${c}`:`差${n}`;
+  }).join(' ');
+  const s=[...item.k.sumSet].sort((a,b)=>a-b).map(n=>{
+    const c=item.k.sumCount[n]||0;
+    return c>=2?`和${n}×${c}`:`和${n}`;
+  }).join(' ');
+  return `差值：${d||'无'}｜和值：${s||'无'}`;
+}
+
+function card(item,idx){
+  const div=document.createElement('div');
+  div.className='hit '+(item.status==='warn'?'warn':(idx===0?'r1':(item.grade<=2?'r2':'r3')));
+
+  const right=idx===0 && item.status!=='warn'?'推荐':(item.status==='warn'?'慎':'可选');
+  const comboText=item.hits.map(c=>c.name).join(' / ');
+
+  div.innerHTML=`
+    <div class="hit-lbl">${item.tag}</div>
+    <div class="hit-seat">${item.seat}号</div>
+    <div>
+      <div class="row1">X=${item.x}　${comboText}</div>
+      <div class="row2">${kernelText(item)}</div>
+      <div class="row3">${item.reason}</div>
+    </div>
+    <div class="hit-right">
+      <div class="hit-wr">${right}</div>
+      <div class="hit-avg">分${Math.max(0,item.score)}</div>
+    </div>
+  `;
+  return div;
+}
+
+function render(room){
+  const info=repeatInfo(room);
+  const {play}=analyze(room);
+
+  resultEl.style.display='none';
+  skipEl.style.display='none';
+  hitListEl.innerHTML='';
+
+  resultHdr.innerHTML=`${parityPattern(room)}｜${info.kind}｜${repeatText(info)}<br>${rankText(room)}`;
+
+  if(!play.length){
+    skipEl.textContent='无可打命中，跳';
+    skipEl.style.display='block';
+    return [];
+  }
+
+  play.forEach((h,idx)=>hitListEl.appendChild(card(h,idx)));
+  resultEl.style.display='block';
+  return play.map(h=>h.seat);
+}
+
+function run(){
+  const room=roomEl.value.trim().replace(/\s+/g,'');
+  if(!/^\d{5}$/.test(room)){
+    msgEl.textContent='请输入正确的5位房号';
+    return;
+  }
+  msgEl.textContent='';
+  const seats=render(room);
+  pushHistory(room,seats);
+  setTimeout(()=>{roomEl.value='';roomEl.focus()},150);
+}
+
+function loadHist(){
+  try{return JSON.parse(localStorage.getItem(HISTORY_KEY))||[]}catch{return[]}
+}
+function saveHist(items){
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(items.slice(0,HISTORY_LIMIT)));
+}
+function renderHist(){
+  const items=loadHist();
+  histListEl.innerHTML='';
+  if(!items.length){
+    histListEl.innerHTML='<div class="histItem"><div class="histMain" style="color:rgba(255,255,255,.22)">暂无记录</div></div>';
+    return;
+  }
+  items.forEach(item=>{
+    const div=document.createElement('div');
+    div.className='histItem';
+    const res=item.seats.length?item.seats.map(s=>`${s}号`).join(' / '):'跳';
+    div.innerHTML=`
+      <div class="histTop"><span>房号 <span class="pill">${item.room}</span></span><span>${item.time}</span></div>
+      <div class="histMain">${item.pattern} → ${res}</div>
+    `;
+    histListEl.appendChild(div);
+  });
+}
+function pushHistory(room,seats){
+  const items=loadHist();
+  items.unshift({
+    room,
+    seats,
+    pattern:parityPattern(room),
+    time:new Date().toLocaleString('zh-CN',{hour12:false})
+  });
+  saveHist(items);
+  renderHist();
+}
+
+goEl.addEventListener('click',run);
+roomEl.addEventListener('keydown',e=>{if(e.key==='Enter')run()});
+clearBtnEl.addEventListener('click',()=>{
+  localStorage.removeItem(HISTORY_KEY);
+  renderHist();
+});
+
+renderHist();
+roomEl.focus();
+</script>
 </body>
 </html>
