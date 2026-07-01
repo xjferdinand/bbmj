@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>5138141｜抓奖大王 v0.1 黄金池+补位层</title>
+  <title>4106167｜枪毙 v1.0 黄金爆发池</title>
   <style>
     :root {
       --bg: #f7f3ec;
@@ -15,39 +15,32 @@
       --red2: #b8342b;
       --green: #1f9d67;
       --orange: #d98c22;
+      --gold: #bd7a18;
       --border: #eadccc;
       --shadow: 0 14px 36px rgba(70, 48, 28, 0.12);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
       background:
         radial-gradient(circle at top left, rgba(217, 75, 61, 0.12), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(217, 140, 34, 0.12), transparent 26%),
+        radial-gradient(circle at bottom right, rgba(217, 140, 34, 0.14), transparent 26%),
         var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
       padding: 22px 14px 42px;
     }
 
-    .wrap {
-      max-width: 860px;
-      margin: 0 auto;
-    }
+    .wrap { max-width: 900px; margin: 0 auto; }
 
-    .hero {
-      text-align: center;
-      margin-bottom: 18px;
-    }
+    .hero { text-align: center; margin-bottom: 18px; }
 
     .title {
       font-size: 28px;
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: 1px;
       margin: 6px 0 8px;
     }
@@ -55,7 +48,7 @@
     .sub {
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.7;
     }
 
     .panel {
@@ -84,21 +77,19 @@
       outline: none;
       text-align: center;
       font-size: 28px;
-      font-weight: 900;
+      font-weight: 1000;
       letter-spacing: 6px;
       color: var(--text);
       background: #fff;
       box-shadow: inset 0 2px 6px rgba(80, 50, 30, 0.05);
     }
 
-    input:focus {
-      border-color: var(--red);
-    }
+    input:focus { border-color: var(--red); }
 
     button {
       border: none;
       cursor: pointer;
-      font-weight: 900;
+      font-weight: 1000;
       transition: 0.18s ease;
     }
 
@@ -113,9 +104,7 @@
       flex: 0 0 auto;
     }
 
-    .btn-main:active {
-      transform: scale(0.96);
-    }
+    .btn-main:active { transform: scale(0.96); }
 
     .btn-small {
       padding: 9px 13px;
@@ -134,9 +123,7 @@
       padding: 16px;
     }
 
-    .result.show {
-      display: block;
-    }
+    .result.show { display: block; }
 
     .badge {
       display: inline-flex;
@@ -145,7 +132,7 @@
       padding: 7px 10px;
       border-radius: 999px;
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 1000;
       margin: 3px;
     }
 
@@ -167,16 +154,19 @@
       border: 1px solid rgba(217, 140, 34, 0.22);
     }
 
+    .badge.gold {
+      background: rgba(189, 122, 24, 0.14);
+      color: var(--gold);
+      border: 1px solid rgba(189, 122, 24, 0.26);
+    }
+
     .big {
       font-size: 34px;
       font-weight: 1000;
       margin: 10px 0 4px;
     }
 
-    .big .seat {
-      color: var(--red);
-      font-size: 46px;
-    }
+    .big .seat { color: var(--red); font-size: 46px; }
 
     .desc {
       color: var(--muted);
@@ -217,10 +207,7 @@
       margin: 3px 0 12px;
     }
 
-    .combo-list {
-      display: grid;
-      gap: 10px;
-    }
+    .combo-list { display: grid; gap: 10px; }
 
     .combo {
       background: #fff;
@@ -229,10 +216,7 @@
       padding: 12px;
     }
 
-    .combo .name {
-      font-weight: 1000;
-      margin-bottom: 6px;
-    }
+    .combo .name { font-weight: 1000; margin-bottom: 6px; }
 
     .combo .rule {
       color: var(--muted);
@@ -258,26 +242,25 @@
       background: #fff4ee;
     }
 
-    .pick .pick-title {
-      font-weight: 1000;
-      margin-bottom: 6px;
+    .pick.blast {
+      border-color: rgba(217, 140, 34, 0.38);
+      background: #fff7e8;
     }
+
+    .pick .pick-title { font-weight: 1000; margin-bottom: 6px; }
 
     .pick .pick-rule {
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    .debug {
-      margin-top: 12px;
-      overflow-x: auto;
-    }
+    .debug { margin-top: 12px; overflow-x: auto; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 620px;
+      min-width: 760px;
       background: #fff;
       border-radius: 14px;
       overflow: hidden;
@@ -298,9 +281,7 @@
       font-weight: 900;
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
+    tr:last-child td { border-bottom: none; }
 
     .history-item {
       display: flex;
@@ -312,13 +293,9 @@
       font-size: 14px;
     }
 
-    .history-item:last-child {
-      border-bottom: none;
-    }
+    .history-item:last-child { border-bottom: none; }
 
-    .history-left {
-      font-weight: 900;
-    }
+    .history-left { font-weight: 1000; }
 
     .history-right {
       color: var(--muted);
@@ -336,46 +313,15 @@
     }
 
     @media (max-width: 620px) {
-      body {
-        padding: 16px 10px 34px;
-      }
-
-      .title {
-        font-size: 23px;
-      }
-
-      .panel {
-        padding: 14px;
-        border-radius: 20px;
-      }
-
-      .input-row {
-        gap: 8px;
-      }
-
-      input {
-        height: 56px;
-        font-size: 25px;
-        letter-spacing: 4px;
-      }
-
-      .btn-main {
-        width: 64px;
-        height: 64px;
-        font-size: 16px;
-      }
-
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .big {
-        font-size: 26px;
-      }
-
-      .big .seat {
-        font-size: 38px;
-      }
+      body { padding: 16px 10px 34px; }
+      .title { font-size: 23px; }
+      .panel { padding: 14px; border-radius: 20px; }
+      .input-row { gap: 8px; }
+      input { height: 56px; font-size: 25px; letter-spacing: 4px; }
+      .btn-main { width: 64px; height: 64px; font-size: 16px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .big { font-size: 26px; }
+      .big .seat { font-size: 38px; }
     }
   </style>
 </head>
@@ -383,9 +329,9 @@
 <body>
   <div class="wrap">
     <div class="hero">
-      <div class="title">5138141｜抓奖大王 v0.1 黄金池+补位层</div>
+      <div class="title">4106167｜枪毙 v1.0 黄金爆发池</div>
       <div class="sub">
-        25局去重库｜黄金池：混合主导｜补位层：和5｜进房率36.0%｜胜率88.9%｜净分+4390｜0大输
+        74局去重库｜只打黄金档｜命中24/74｜进房率32.43%｜胜率100%｜净分+22060｜均分+919.2｜大赢18｜1000+爆发10｜0大输
       </div>
     </div>
 
@@ -408,24 +354,24 @@
     </div>
 
     <div class="panel">
-      <div class="section-title">v0.1 总回测</div>
+      <div class="section-title">黄金档总回测</div>
       <div class="grid">
-        <div class="stat"><div class="v">9 / 25</div><div class="k">命中进房</div></div>
-        <div class="stat"><div class="v">36.0%</div><div class="k">进房率</div></div>
-        <div class="stat"><div class="v">88.9%</div><div class="k">胜率</div></div>
-        <div class="stat"><div class="v">+4390</div><div class="k">总得分</div></div>
-        <div class="stat"><div class="v">+488</div><div class="k">单局均分</div></div>
-        <div class="stat"><div class="v">5</div><div class="k">大赢≥500</div></div>
+        <div class="stat"><div class="v">24 / 74</div><div class="k">命中进房</div></div>
+        <div class="stat"><div class="v">32.43%</div><div class="k">进房率</div></div>
+        <div class="stat"><div class="v">100%</div><div class="k">胜率</div></div>
+        <div class="stat"><div class="v">+22060</div><div class="k">总得分</div></div>
+        <div class="stat"><div class="v">+919.2</div><div class="k">单局均分</div></div>
+        <div class="stat"><div class="v">18</div><div class="k">大赢≥500</div></div>
+        <div class="stat"><div class="v">10</div><div class="k">爆发≥1000</div></div>
         <div class="stat"><div class="v">0</div><div class="k">大输≤-500</div></div>
-        <div class="stat"><div class="v">1负0平</div><div class="k">噪音局</div></div>
       </div>
       <div class="desc" style="margin-top:12px;">
-        唯一输局：44325 6号 -130。模型已避开全部4个历史大输：64680 2号 -830、39543 5号 -520、92795 5号 -1170、12831 1号 -530。
+        本版只写入刚才确认的黄金档：稳胆黄金 + 爆发黄金。网页不再混入普通补位；未命中黄金档就直接显示“不进房”。
       </div>
     </div>
 
     <div class="panel">
-      <div class="section-title">组合池：抓奖大王 v0.1</div>
+      <div class="section-title">组合池：枪毙 v1.0 黄金档</div>
       <div class="combo-list" id="comboList"></div>
     </div>
 
@@ -438,7 +384,7 @@
     </div>
 
     <div class="footer-note">
-      规则锁死：1号=A，2号=B，3号=C，4号=D，5号=E，6号=E。差0不作为有效差核；和值只统计1-9，和值>9溢出不计。最多输出3个不同推荐位。
+      规则锁死：1号=A，2号=B，3号=C，4号=D，5号=E，6号=E。差0不作为有效差核；和值只统计1-9，和值>9溢出不计。最多输出3个不同推荐位，同一位子命中多个组合只显示一次。
     </div>
   </div>
 
@@ -446,31 +392,105 @@
     const COMBOS = [
       {
         id: 1,
-        name: "混合主导",
-        grade: "黄金池｜A档主打",
-        stat: "7局｜6胜1负｜胜率85.7%｜净分+3510｜均分+501｜大赢4｜大输0",
-        rule: "任意位子：差值里任意差出现2次及以上，并且和值里任意和出现2次及以上。也就是同时有双差和双和。",
-        test: f => f.mixedDominant
+        name: "X=5 + 差3/差4",
+        shortName: "X5差3/4",
+        grade: "稳胆黄金｜A档主打",
+        stat: "7局｜7胜0负｜胜率100%｜净分+3170｜均分+452.9｜大赢4｜大输0",
+        rule: "任意位子：当前位子的X=5，并且X与其他数字存在差3或差4。",
+        type: "steady",
+        test: f => f.x === 5 && (f.hasDiff(3) || f.hasDiff(4))
       },
       {
         id: 2,
-        name: "和5",
-        grade: "补位层｜B档补位",
-        stat: "4局｜4胜0负｜胜率100%｜净分+2460｜均分+615｜大赢2｜大输0",
-        rule: "任意位子：当前位子的X，与其他任意数字形成有效和值5。",
-        test: f => f.hasSum(5)
+        name: "5号 + 无重号 + 差3",
+        shortName: "5号无重号差3",
+        grade: "爆发黄金｜专抓1000+",
+        stat: "3局｜3胜0负｜胜率100%｜净分+4740｜均分+1580｜1000+爆发3｜大输0",
+        rule: "只看5号位：房号无重号，并且当前X与其他数字存在差3。",
+        type: "blast",
+        test: f => f.seat === 5 && !f.hasRepeat && f.hasDiff(3)
+      },
+      {
+        id: 3,
+        name: "和7 + 差1 + 差2",
+        shortName: "和7差1差2",
+        grade: "爆发黄金｜高均分",
+        stat: "5局｜5胜0负｜胜率100%｜净分+5910｜均分+1182｜1000+爆发3｜大输0",
+        rule: "任意位子：同时命中有效和值7、差1、差2。",
+        type: "blast",
+        test: f => f.hasSum(7) && f.hasDiff(1) && f.hasDiff(2)
+      },
+      {
+        id: 4,
+        name: "X=8 + 差1",
+        shortName: "X8差1",
+        grade: "爆发黄金｜高均分",
+        stat: "3局｜3胜0负｜胜率100%｜净分+4230｜均分+1410｜1000+爆发2｜大输0",
+        rule: "任意位子：当前位子的X=8，并且X与其他数字存在差1。",
+        type: "blast",
+        test: f => f.x === 8 && f.hasDiff(1)
+      },
+      {
+        id: 5,
+        name: "4号 + 和6",
+        shortName: "4号和6",
+        grade: "爆发黄金｜4号专用",
+        stat: "3局｜3胜0负｜胜率100%｜净分+3910｜均分+1303.3｜1000+爆发2｜大输0",
+        rule: "只看4号位：当前X与其他数字形成有效和值6。",
+        type: "blast",
+        test: f => f.seat === 4 && f.hasSum(6)
+      },
+      {
+        id: 6,
+        name: "X=3 + 差2",
+        shortName: "X3差2",
+        grade: "爆发黄金｜低频干净",
+        stat: "3局｜3胜0负｜胜率100%｜净分+3730｜均分+1243.3｜1000+爆发2｜大输0",
+        rule: "任意位子：当前位子的X=3，并且X与其他数字存在差2。",
+        type: "blast",
+        test: f => f.x === 3 && f.hasDiff(2)
+      },
+      {
+        id: 7,
+        name: "和8 + 差6 + 差主导",
+        shortName: "和8差6差主导",
+        grade: "爆发黄金｜结构型",
+        stat: "3局｜3胜0负｜胜率100%｜净分+3920｜均分+1306.7｜1000+爆发2｜大输0",
+        rule: "任意位子：同时有有效和值8、差6，并且结构为差主导，即有双差且无双和。",
+        type: "blast",
+        test: f => f.hasSum(8) && f.hasDiff(6) && f.diffDominant
+      },
+      {
+        id: 8,
+        name: "双差6 + 差3",
+        shortName: "双差6差3",
+        grade: "爆发黄金｜结构型",
+        stat: "3局｜3胜0负｜胜率100%｜净分+2200｜均分+733.3｜1000+爆发1｜大输0",
+        rule: "任意位子：差6出现2次及以上，同时还存在差3。",
+        type: "blast",
+        test: f => f.diffCount(6) >= 2 && f.hasDiff(3)
+      },
+      {
+        id: 9,
+        name: "2号 + 和4",
+        shortName: "2号和4",
+        grade: "爆发黄金｜2号补爆",
+        stat: "2局｜2胜0负｜胜率100%｜净分+1710｜均分+855｜1000+爆发1｜大输0",
+        rule: "只看2号位：当前X与其他数字形成有效和值4。",
+        type: "blast",
+        test: f => f.seat === 2 && f.hasSum(4)
       }
     ];
 
     const MODEL_STAT = {
-      hit: "9 / 25",
-      rate: "36.0%",
-      winRate: "88.9%",
-      score: "+4390",
-      avg: "+488",
-      bigWin: "5",
-      bigLoss: "0",
-      noise: "1负0平"
+      hit: "24 / 74",
+      rate: "32.43%",
+      winRate: "100%",
+      score: "+22060",
+      avg: "+919.2",
+      bigWin: "18",
+      blast: "10",
+      bigLoss: "0"
     };
 
     const SEAT_TO_INDEX = {
@@ -501,6 +521,7 @@
         .map(Number)
         .filter(k => map[k] >= 2)
         .sort((a, b) => a - b);
+
       if (!keys.length) return "无";
       return keys.map(k => `${prefix}${k}×${map[k]}`).join(" / ");
     }
@@ -661,7 +682,7 @@
         box.innerHTML = `
           <span class="badge no">不进房</span>
           <div class="big">${data.room}</div>
-          <div class="desc">原因：未命中抓奖大王 v0.1 的黄金池或补位层。</div>
+          <div class="desc">原因：未命中枪毙 v1.0 黄金档。当前版本只打黄金，不命中就放弃。</div>
           ${renderDebug(data)}
         `;
         return;
@@ -673,11 +694,11 @@
       const top3Html = top3.map((m, i) => {
         const comboNames = m.combos
           .sort((a, b) => a.id - b.id)
-          .map(c => c.name)
+          .map(c => `${c.name}`)
           .join("、");
 
         return `
-          <div class="pick ${i === 0 ? "main" : ""}">
+          <div class="pick ${i === 0 ? "main" : ""} ${m.bestCombo.type === "blast" ? "blast" : ""}">
             <div class="pick-title">
               ${i === 0 ? "🔥主推" : "⚡备选"}｜${m.seat}号｜${m.bestCombo.name}
             </div>
@@ -691,25 +712,22 @@
         `;
       }).join("");
 
-      const allHits = data.uniqueMatches
-        .map(m => {
-          const comboNames = m.combos
-            .sort((a, b) => a.id - b.id)
-            .map(c => c.name)
-            .join("、");
+      const allHits = data.uniqueMatches.map(m => {
+        const comboNames = m.combos
+          .sort((a, b) => a.id - b.id)
+          .map(c => c.name)
+          .join("、");
 
-          return `${m.seat}号｜${comboNames}`;
-        })
-        .join("<br>");
+        return `${m.seat}号｜X=${m.x}｜${comboNames}`;
+      }).join("<br>");
 
       box.className = "result show";
       box.innerHTML = `
         <span class="badge ok">建议进房</span>
-        <span class="badge warn">${main.bestCombo.grade}</span>
+        <span class="badge gold">黄金档</span>
+        <span class="badge warn">最多推荐3个不同位子</span>
 
-        <div class="big">
-          推荐位（最多3个不同位子）
-        </div>
+        <div class="big">推荐位：<span class="seat">${main.seat}号</span></div>
 
         <div class="pick-list">
           ${top3Html}
@@ -722,10 +740,10 @@
         </div>
 
         <div class="grid">
-          <div class="stat"><div class="v">${MODEL_STAT.hit}</div><div class="k">总命中</div></div>
+          <div class="stat"><div class="v">${MODEL_STAT.hit}</div><div class="k">黄金命中</div></div>
           <div class="stat"><div class="v">${MODEL_STAT.rate}</div><div class="k">进房率</div></div>
-          <div class="stat"><div class="v">${MODEL_STAT.winRate}</div><div class="k">总胜率</div></div>
-          <div class="stat"><div class="v">${MODEL_STAT.score}</div><div class="k">总得分</div></div>
+          <div class="stat"><div class="v">${MODEL_STAT.winRate}</div><div class="k">胜率</div></div>
+          <div class="stat"><div class="v">${MODEL_STAT.score}</div><div class="k">净分</div></div>
         </div>
 
         <div class="combo" style="margin-top:12px;">
@@ -751,6 +769,7 @@
             <td>${formatMap(f.sumMap, "和")}</td>
             <td>${formatDoubleKeys(f.diffMap, "双差")}</td>
             <td>${formatDoubleKeys(f.sumMap, "双和")}</td>
+            <td>${f.hasRepeat ? "有" : "无"}</td>
             <td>${getStructureTag(f)}</td>
             <td>${hitNames}</td>
           </tr>
@@ -768,6 +787,7 @@
                 <th>和值</th>
                 <th>双差</th>
                 <th>双和</th>
+                <th>重号</th>
                 <th>结构</th>
                 <th>命中组合</th>
               </tr>
@@ -784,17 +804,19 @@
         time: new Date().toLocaleString(),
         seat: data.main ? data.main.seat : null,
         combo: data.main ? data.main.bestCombo.name : "未命中",
-        top3: data.top3 ? data.top3.map(m => `${m.seat}号-${m.bestCombo.name}`).join("；") : ""
+        top3: data.top3
+          ? data.top3.map(m => `${m.seat}号-${m.bestCombo.name}`).join("；")
+          : ""
       };
 
-      const list = JSON.parse(localStorage.getItem("zjdw_v01_history") || "[]");
+      const list = JSON.parse(localStorage.getItem("qb_4106167_v10_history") || "[]");
       list.unshift(item);
-      localStorage.setItem("zjdw_v01_history", JSON.stringify(list.slice(0, 30)));
+      localStorage.setItem("qb_4106167_v10_history", JSON.stringify(list.slice(0, 30)));
     }
 
     function renderHistory() {
       const box = document.getElementById("historyBox");
-      const list = JSON.parse(localStorage.getItem("zjdw_v01_history") || "[]");
+      const list = JSON.parse(localStorage.getItem("qb_4106167_v10_history") || "[]");
 
       if (!list.length) {
         box.innerHTML = "暂无记录";
@@ -814,12 +836,13 @@
     }
 
     function clearHistory() {
-      localStorage.removeItem("zjdw_v01_history");
+      localStorage.removeItem("qb_4106167_v10_history");
       renderHistory();
     }
 
     function renderComboList() {
       const box = document.getElementById("comboList");
+
       box.innerHTML = COMBOS.map(c => `
         <div class="combo">
           <div class="name">${c.id}. ${c.name}｜${c.grade}</div>
